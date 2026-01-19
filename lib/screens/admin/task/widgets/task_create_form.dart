@@ -1,3 +1,4 @@
+import 'package:dekitane/dto/task_create_dto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'task_input_row.dart';
@@ -25,6 +26,11 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
   void _submit() {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
+
+    final dto = TaskCreateDto(
+        title: titleController.text, point: int.parse(pointController.text));
+
+    //TODO API通信
   }
 
   @override
@@ -49,6 +55,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
                 label: 'タスク名',
                 controller: titleController,
                 validator: TaskValidator.title,
+                fieldKey: const ValueKey('titleField'),
               ),
               const SizedBox(height: 8),
               TaskInputRow(
@@ -56,6 +63,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
                 controller: pointController,
                 isNumber: true,
                 validator: TaskValidator.point,
+                fieldKey: const ValueKey('pointField'),
               ),
               const SizedBox(height: 16),
               Align(

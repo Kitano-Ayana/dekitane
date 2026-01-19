@@ -5,6 +5,7 @@ class TaskInputRow extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?) ? validator;
   final bool isNumber;
+  final Key? fieldKey;
 
   const TaskInputRow({
     super.key,
@@ -12,6 +13,7 @@ class TaskInputRow extends StatelessWidget {
     required this.controller,
     this.validator,
     this.isNumber = false,
+    this.fieldKey,
   });
 
   @override
@@ -24,6 +26,7 @@ class TaskInputRow extends StatelessWidget {
         ),
         Expanded(
           child: TextFormField(
+            key: fieldKey,
             controller: controller,
             keyboardType: isNumber ? TextInputType.number : TextInputType.text,
             validator: validator,

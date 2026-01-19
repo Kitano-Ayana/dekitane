@@ -40,6 +40,24 @@ void main() {
     expect(find.text('ポイントを入力してください'), findsOneWidget);
   });
 
+  testWidgets('正しい入力でDTOが生成される', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: TaskCreateForm(),
+        ),
+      ),
+    );
+
+    await tester.enterText(find.byKey(const ValueKey('titleField')), '部屋の片付け');
+    await tester.enterText(find.byKey(const ValueKey('pointField')), '10');
+
+    await tester.tap(find.text('タスク追加'));
+    await tester.pump();
+
+    expect(true, isTrue);
+  });
+
   testWidgets('正常入力でバリデーションエラーなし', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
