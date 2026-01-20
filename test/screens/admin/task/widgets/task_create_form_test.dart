@@ -81,4 +81,21 @@ void main() {
 
     expect(find.textContaining('入力してください'), findsNothing);
   });
+
+  testWidgets('正しい入力で送信できる', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home:Scaffold(
+          body: TaskCreateForm(),
+        ),
+      ),
+    );
+
+    await tester.enterText(find.byKey(const ValueKey('titleField')), '掃除');
+    await tester.enterText(find.byKey(const ValueKey('pointFiled')), '10');
+
+    await tester.tap(find.text('タスク追加'));
+
+    await tester.pumpAndSettle();
+  });
 }
