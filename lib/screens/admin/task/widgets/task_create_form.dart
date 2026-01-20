@@ -1,7 +1,9 @@
+import 'package:dekitane/dto/task_create_dto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'task_input_row.dart';
 import '../../../../validators/task_validator.dart';
+import '../../../../api/task_api.dart';
 
 class TaskCreateForm extends StatefulWidget {
   const TaskCreateForm({super.key});
@@ -22,9 +24,18 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
     super.dispose();
   }
 
-  void _submit() {
+  void _submit() async {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
+
+    final dto = TaskCreateDto(
+        title: titleController.text, point: int.parse(pointController.text));
+
+    //TODO API通信
+    await TaskApi().createTask(
+      title: titleController.text,
+      point: int.parse(pointController.text)
+    );
   }
 
   @override
@@ -49,6 +60,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
                 label: 'タスク名',
                 controller: titleController,
                 validator: TaskValidator.title,
+                fieldKey: const ValueKey('titleField'),
               ),
               const SizedBox(height: 8),
               TaskInputRow(
@@ -56,6 +68,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
                 controller: pointController,
                 isNumber: true,
                 validator: TaskValidator.point,
+                fieldKey: const ValueKey('pointField'),
               ),
               const SizedBox(height: 16),
               Align(
