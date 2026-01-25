@@ -1,13 +1,20 @@
+import 'package:dekitane/dto/task_create_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dekitane/screens/admin/task/widgets/task_create_form.dart';
 
 void main() {
   testWidgets('TaskCreateForm 初期表示', (WidgetTester tester) async {
+    TaskCreateDto? receivedDto;
+
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: Scaffold(
-          body: TaskCreateForm(),
+          body: TaskCreateForm(
+            onSubmit: (dto) async {
+              receivedDto = dto;
+            },
+          ),
         ),
       ),
     );
@@ -24,10 +31,16 @@ void main() {
   });
 
   testWidgets('未入力で送信するとバリデーションエラーが表示', (WidgetTester tester) async {
+    TaskCreateDto? receivedDto;
+
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: Scaffold(
-          body: TaskCreateForm(),
+          body: TaskCreateForm(
+            onSubmit: (dto) async {
+              receivedDto = dto;
+            },
+          ),
         ),
       ),
     );
@@ -41,10 +54,16 @@ void main() {
   });
 
   testWidgets('正しい入力でDTOが生成される', (tester) async {
+    TaskCreateDto? receivedDto;
+
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: Scaffold(
-          body: TaskCreateForm(),
+          body: TaskCreateForm(
+            onSubmit: (dto) async {
+              receivedDto = dto;
+            },
+          ),
         ),
       ),
     );
@@ -59,10 +78,16 @@ void main() {
   });
 
   testWidgets('正常入力でバリデーションエラーなし', (WidgetTester tester) async {
+    TaskCreateDto? receivedDto;
+
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: Scaffold(
-          body: TaskCreateForm(),
+          body: TaskCreateForm(
+            onSubmit: (dto) async {
+              receivedDto = dto;
+            },
+          ),
         ),
       ),
     );
@@ -83,19 +108,49 @@ void main() {
   });
 
   testWidgets('正しい入力で送信できる', (tester) async {
+    TaskCreateDto? receivedDto;
+
     await tester.pumpWidget(
-      const MaterialApp(
-        home:Scaffold(
-          body: TaskCreateForm(),
+      MaterialApp(
+        home: Scaffold(
+          body: TaskCreateForm(
+            onSubmit: (dto) async {
+              receivedDto = dto;
+            },
+          ),
         ),
       ),
     );
-
     await tester.enterText(find.byKey(const ValueKey('titleField')), '掃除');
-    await tester.enterText(find.byKey(const ValueKey('pointFiled')), '10');
+    await tester.enterText(find.byKey(const ValueKey('pointField')), '10');
 
     await tester.tap(find.text('タスク追加'));
 
     await tester.pumpAndSettle();
+  });
+
+  testWidgets('submitするとonSubmitに正しいDTOが渡される', (tester) async {
+    TaskCreateDto? receivedDto;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: TaskCreateForm(
+            onSubmit: (dto) async {
+              receivedDto = dto;
+            },
+          ),
+        ),
+      ),
+    );
+    await tester.enterText(find.byKey(const ValueKey('titleField')), '部屋の片付け');
+    await tester.enterText(find.byKey(const ValueKey('pointField')), '10');
+
+    await tester.tap(find.text('タスク追加'));
+    await tester.pump();
+
+    expect(receivedDto, isNotNull);
+    expect(receivedDto!.title, '部屋の片付け');
+    expect(receivedDto!.point, 10);
   });
 }
