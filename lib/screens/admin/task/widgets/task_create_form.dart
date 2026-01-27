@@ -3,10 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'task_input_row.dart';
 import '../../../../validators/task_validator.dart';
-import '../../../../api/task_api.dart';
 
 class TaskCreateForm extends StatefulWidget {
-  const TaskCreateForm({super.key});
+  final Future<void> Function(TaskCreateDto dto) onSubmit;
+
+  const TaskCreateForm({
+    super.key,
+    required this.onSubmit,
+  });
 
   @override
   State<TaskCreateForm> createState() => _TaskCreateFormState();
@@ -31,11 +35,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
     final dto = TaskCreateDto(
         title: titleController.text, point: int.parse(pointController.text));
 
-    //TODO API通信
-    await TaskApi().createTask(
-      title: titleController.text,
-      point: int.parse(pointController.text)
-    );
+    await widget.onSubmit(dto);
   }
 
   @override
