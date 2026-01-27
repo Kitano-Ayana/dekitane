@@ -107,28 +107,6 @@ void main() {
     expect(find.textContaining('入力してください'), findsNothing);
   });
 
-  testWidgets('正しい入力で送信できる', (tester) async {
-    TaskCreateDto? receivedDto;
-
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: TaskCreateForm(
-            onSubmit: (dto) async {
-              receivedDto = dto;
-            },
-          ),
-        ),
-      ),
-    );
-    await tester.enterText(find.byKey(const ValueKey('titleField')), '掃除');
-    await tester.enterText(find.byKey(const ValueKey('pointField')), '10');
-
-    await tester.tap(find.text('タスク追加'));
-
-    await tester.pumpAndSettle();
-  });
-
   testWidgets('submitするとonSubmitに正しいDTOが渡される', (tester) async {
     TaskCreateDto? receivedDto;
 
