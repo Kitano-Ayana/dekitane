@@ -6,7 +6,13 @@ import 'widgets/task_create_form.dart';
 import 'widgets/task_list.dart';
 
 class TaskScreen extends StatelessWidget {
-  const TaskScreen({super.key});
+  final TaskApi taskApi;
+
+  const TaskScreen({
+    super.key,
+    required this.taskApi,
+  });
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +25,7 @@ class TaskScreen extends StatelessWidget {
           TaskCreateForm(
             onSubmit: (TaskCreateDto dto) async  {
               try {
-                await TaskApi().createTask(title: dto.title, point: dto.point);
+                await taskApi.createTask(title: dto.title, point: dto.point);
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('タスクを作成しました'),
