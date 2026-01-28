@@ -3,12 +3,13 @@ import 'package:dekitane/screens/admin/task/widgets/task_create_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dekitane/screens/admin/task/widgets/task_list.dart';
+import '../../../fakes/fake_task_api.dart';
 
 void main() {
   testWidgets('TaskScreenがエラーなく表示される', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: TaskScreen(),
+      MaterialApp(
+        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
       ),
     );
 
@@ -20,8 +21,8 @@ void main() {
 
   testWidgets('入力フォームと送信ボタンが存在する', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home:TaskScreen(),
+      MaterialApp(
+        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
       ),
     );
 
@@ -32,8 +33,8 @@ void main() {
 
   testWidgets('テキストを入力できる', (testser) async {
     await testser.pumpWidget(
-      const MaterialApp(
-        home:TaskScreen()
+      MaterialApp(
+        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
       ),
     );
 
@@ -46,8 +47,8 @@ void main() {
 
   testWidgets('未入力で送信してもSnackBarは表示されない', (tester) async{
     await tester.pumpWidget(
-      const MaterialApp(
-        home:TaskScreen(),
+      MaterialApp(
+        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
       ),
     );
 
@@ -58,11 +59,11 @@ void main() {
 
   });
 
-  //現在TaskApiがDIしてないのでテストできない
+  //TaskApiをDIしてテスト可能にする
   testWidgets('失敗SnackBarを表示したい', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: TaskScreen(),
+      MaterialApp(
+        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: true)),
       ),
     );
 
@@ -72,7 +73,24 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // どっちが出るか制御不能
     expect(find.text('タスクを作成に失敗しました'), findsOneWidget);
   });
+
+  //TaskApiをDIしてテスト可能にする
+  testWidgets('成功SnackBarを表示したい', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
+      ),
+    );
+
+    await tester.enterText(find.byKey(const ValueKey('titleField')), '掃除');
+    await tester.enterText(find.byKey(const ValueKey('pointField')), '10');
+    await tester.tap(find.text('タスク追加'));
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('タスクを作成しました'), findsOneWidget);
+  });
+
 }
