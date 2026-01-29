@@ -61,9 +61,11 @@ void main() {
 
   //TaskApiをDIしてテスト可能にする
   testWidgets('失敗SnackBarを表示したい', (tester) async {
+    final fakeTaskApi = FakeTaskApi(shouldFail: true);
+
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: true)),
+        home: TaskScreen(taskApi: fakeTaskApi),
       ),
     );
 
@@ -71,16 +73,19 @@ void main() {
     await tester.enterText(find.byKey(const ValueKey('pointField')), '10');
     await tester.tap(find.text('タスク追加'));
 
+
     await tester.pumpAndSettle();
+    expect(fakeTaskApi.called, isTrue);
 
     expect(find.text('タスクを作成に失敗しました'), findsOneWidget);
   });
 
   //TaskApiをDIしてテスト可能にする
   testWidgets('成功SnackBarを表示したい', (tester) async {
+    final fakeTaskApi = FakeTaskApi(shouldFail: false);
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
+        home: TaskScreen(taskApi: fakeTaskApi),
       ),
     );
 
@@ -90,6 +95,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
+    expect(fakeTaskApi.called, isTrue);
     expect(find.text('タスクを作成しました'), findsOneWidget);
   });
 
