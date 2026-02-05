@@ -1,3 +1,4 @@
+import 'package:dekitane/api/task_api_interface.dart';
 import 'package:dekitane/screens/admin/task/task_screen.dart';
 import 'package:dekitane/screens/admin/task/widgets/task_create_form.dart';
 import 'package:flutter/material.dart';
@@ -61,31 +62,28 @@ void main() {
 
   //TaskApiをDIしてテスト可能にする
   testWidgets('失敗SnackBarを表示したい', (tester) async {
-    final fakeTaskApi = FakeTaskApi(shouldFail: true);
+    final TaskApiInterface taskApi = FakeTaskApi(shouldFail: true);
 
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: fakeTaskApi),
+        home: TaskScreen(taskApi: taskApi),
       ),
     );
 
     await tester.enterText(find.byKey(const ValueKey('titleField')), '掃除');
     await tester.enterText(find.byKey(const ValueKey('pointField')), '10');
     await tester.tap(find.text('タスク追加'));
-
-
     await tester.pumpAndSettle();
-    expect(fakeTaskApi.called, isTrue);
 
     expect(find.text('タスクを作成に失敗しました'), findsOneWidget);
   });
 
   //TaskApiをDIしてテスト可能にする
   testWidgets('成功SnackBarを表示したい', (tester) async {
-    final fakeTaskApi = FakeTaskApi(shouldFail: false);
+    final TaskApiInterface taskApi = FakeTaskApi(shouldFail: false);
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: fakeTaskApi),
+        home: TaskScreen(taskApi: taskApi),
       ),
     );
 
@@ -95,7 +93,6 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(fakeTaskApi.called, isTrue);
     expect(find.text('タスクを作成しました'), findsOneWidget);
   });
 

@@ -1,4 +1,5 @@
 import 'package:dekitane/api/task_api.dart';
+import 'package:dekitane/api/task_api_interface.dart';
 import 'package:dekitane/dto/task_create_dto.dart';
 import 'package:flutter/material.dart';
 import '../../../data/task_stub.dart';
@@ -6,7 +7,7 @@ import 'widgets/task_create_form.dart';
 import 'widgets/task_list.dart';
 
 class TaskScreen extends StatelessWidget {
-  final TaskApi taskApi;
+  final TaskApiInterface taskApi;
 
   const TaskScreen({
     super.key,

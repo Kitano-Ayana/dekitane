@@ -1,7 +1,9 @@
+import 'package:dekitane/api/task_api_interface.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TaskApi {
+class TaskApi implements TaskApiInterface {
+  @override
   Future<void> createTask({
     required String title,
     required int point,
