@@ -1,6 +1,7 @@
 import 'package:dekitane/api/task_api.dart';
+import 'package:dekitane/api/task_api_interface.dart';
 
-class FakeTaskApi extends TaskApi {
+class FakeTaskApi extends TaskApiInterface {
   bool shouldFail;
   bool called = false;
 
