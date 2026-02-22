@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dekitane/screens/admin/task/widgets/task_list.dart';
 import '../../../fakes/fake_task_api.dart';
+import '../../../fakes/fake_task_repository.dart';
 
 void main() {
   testWidgets('TaskScreenがエラーなく表示される', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
+        home: TaskScreen(
+          repository: FakeTaskRepository(shouldFail: false),
+        ),
       ),
     );
 
@@ -23,7 +26,9 @@ void main() {
   testWidgets('入力フォームと送信ボタンが存在する', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
+        home: TaskScreen(
+          repository: FakeTaskRepository(shouldFail: false),
+        ),
       ),
     );
 
@@ -35,7 +40,9 @@ void main() {
   testWidgets('テキストを入力できる', (testser) async {
     await testser.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
+        home: TaskScreen(
+          repository: FakeTaskRepository(shouldFail: false),
+        ),
       ),
     );
 
@@ -49,7 +56,9 @@ void main() {
   testWidgets('未入力で送信してもSnackBarは表示されない', (tester) async{
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: FakeTaskApi(shouldFail: false)),
+        home: TaskScreen(
+          repository: FakeTaskRepository(shouldFail: false),
+        ),
       ),
     );
 
@@ -62,11 +71,12 @@ void main() {
 
   //TaskApiをDIしてテスト可能にする
   testWidgets('失敗SnackBarを表示したい', (tester) async {
-    final TaskApiInterface taskApi = FakeTaskApi(shouldFail: true);
 
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: taskApi),
+        home: TaskScreen(
+          repository: FakeTaskRepository(shouldFail: true),
+        ),
       ),
     );
 
@@ -80,10 +90,11 @@ void main() {
 
   //TaskApiをDIしてテスト可能にする
   testWidgets('成功SnackBarを表示したい', (tester) async {
-    final TaskApiInterface taskApi = FakeTaskApi(shouldFail: false);
     await tester.pumpWidget(
       MaterialApp(
-        home: TaskScreen(taskApi: taskApi),
+        home: TaskScreen(
+          repository: FakeTaskRepository(shouldFail: false),
+        ),
       ),
     );
 
