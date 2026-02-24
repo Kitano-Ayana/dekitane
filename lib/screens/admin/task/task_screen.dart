@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import '../../../data/task_stub.dart';
 import 'widgets/task_create_form.dart';
 import 'widgets/task_list.dart';
+import 'package:dekitane/repository/task_repository_interface.dart';
 
 class TaskScreen extends StatelessWidget {
-  final TaskApiInterface taskApi;
+  final TaskRepositoryInterface repository;
 
   const TaskScreen({
     super.key,
-    required this.taskApi,
+    required this.repository,
   });
 
 
@@ -26,7 +27,7 @@ class TaskScreen extends StatelessWidget {
           TaskCreateForm(
             onSubmit: (TaskCreateDto dto) async  {
               try {
-                await taskApi.createTask(title: dto.title, point: dto.point);
+                await repository.createTask(title: dto.title, point: dto.point);
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('タスクを作成しました'),

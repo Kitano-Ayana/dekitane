@@ -3,6 +3,8 @@ import 'package:dekitane/screens/admin/admin_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dekitane/screens/admin/task/task_screen.dart';
+import 'package:dekitane/api/task_api.dart';
+import 'package:dekitane/repository/task_repository.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -20,7 +22,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/admin/task',
       name: 'adminTask',
-      builder: (context, state) => const TaskScreen(),
+      builder: (context, state) => TaskScreen(
+        repository: TaskRepository(
+          taskApi: TaskApi(),
+        ),
+      ),
     ),
   ],
 );
