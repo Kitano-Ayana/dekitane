@@ -1,5 +1,6 @@
 import 'package:dekitane/screens/home_screen.dart';
 import 'package:dekitane/screens/admin/admin_home_screen.dart';
+import 'package:dekitane/usecase/create_task_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dekitane/screens/admin/task/task_screen.dart';
@@ -22,11 +23,12 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/admin/task',
       name: 'adminTask',
-      builder: (context, state) => TaskScreen(
-        repository: TaskRepository(
-          taskApi: TaskApi(),
-        ),
-      ),
+      builder: (context, state) {
+        final taskApi = TaskApi();
+        final repository = TaskRepository(taskApi: taskApi);
+        final createTaskUseCase = CreateTaskUseCase(repository: repository);
+        return TaskScreen(createTaskUseCase: createTaskUseCase);
+      },
     ),
   ],
 );
