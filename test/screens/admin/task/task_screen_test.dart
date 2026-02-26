@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dekitane/screens/admin/task/widgets/task_list.dart';
 import '../../../fakes/fake_task_api.dart';
+import 'package:dekitane/usecase/create_task_usecase.dart';
 import '../../../fakes/fake_task_repository.dart';
 
 void main() {
@@ -12,7 +13,8 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: TaskScreen(
-          repository: FakeTaskRepository(shouldFail: false),
+          createTaskUseCase: CreateTaskUseCase(
+              repository: FakeTaskRepository(shouldFail: false)),
         ),
       ),
     );
@@ -27,7 +29,8 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: TaskScreen(
-          repository: FakeTaskRepository(shouldFail: false),
+          createTaskUseCase: CreateTaskUseCase(
+              repository: FakeTaskRepository(shouldFail: false)),
         ),
       ),
     );
@@ -41,23 +44,31 @@ void main() {
     await testser.pumpWidget(
       MaterialApp(
         home: TaskScreen(
-          repository: FakeTaskRepository(shouldFail: false),
+          createTaskUseCase: CreateTaskUseCase(
+              repository: FakeTaskRepository(shouldFail: false)),
         ),
       ),
     );
 
-    await testser.enterText(find.byKey(const ValueKey('titleField')), '掃除',);
-    await testser.enterText(find.byKey(const ValueKey('pointField')), '10',);
+    await testser.enterText(
+      find.byKey(const ValueKey('titleField')),
+      '掃除',
+    );
+    await testser.enterText(
+      find.byKey(const ValueKey('pointField')),
+      '10',
+    );
 
     expect(find.text('掃除'), findsOneWidget);
     expect(find.text('10'), findsOneWidget);
   });
 
-  testWidgets('未入力で送信してもSnackBarは表示されない', (tester) async{
+  testWidgets('未入力で送信してもSnackBarは表示されない', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: TaskScreen(
-          repository: FakeTaskRepository(shouldFail: false),
+          createTaskUseCase: CreateTaskUseCase(
+              repository: FakeTaskRepository(shouldFail: false)),
         ),
       ),
     );
@@ -66,16 +77,15 @@ void main() {
     await tester.pump();
 
     expect(find.byType(SnackBar), findsNothing);
-
   });
 
   //TaskApiをDIしてテスト可能にする
   testWidgets('失敗SnackBarを表示したい', (tester) async {
-
     await tester.pumpWidget(
       MaterialApp(
         home: TaskScreen(
-          repository: FakeTaskRepository(shouldFail: true),
+          createTaskUseCase: CreateTaskUseCase(
+              repository: FakeTaskRepository(shouldFail: true)),
         ),
       ),
     );
@@ -93,7 +103,8 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: TaskScreen(
-          repository: FakeTaskRepository(shouldFail: false),
+          createTaskUseCase: CreateTaskUseCase(
+              repository: FakeTaskRepository(shouldFail: false)),
         ),
       ),
     );
@@ -106,5 +117,4 @@ void main() {
 
     expect(find.text('タスクを作成しました'), findsOneWidget);
   });
-
 }
