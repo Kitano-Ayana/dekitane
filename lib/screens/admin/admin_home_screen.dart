@@ -19,6 +19,7 @@ class adminHomeScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
+                context.goNamed('adminTicket');
               },
               child: const Text('チケット'),
             ),
